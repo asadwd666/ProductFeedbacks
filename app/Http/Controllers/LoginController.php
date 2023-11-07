@@ -60,6 +60,6 @@ class LoginController extends Controller
     }
     public function logout(){
         Auth::logout();
-        return back()->with('success', 'You have been logged out successfully.');
+        return redirect('/login')->with('success', 'You have been logged out successfully.');
     }
 }

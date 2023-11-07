@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class,'dashboard']);
-Route::get('/{login?}/{register?}', [LoginController::class, 'index']);
+Route::get('/{login?}/{register?}', [LoginController::class, 'index'])->name('login');
 Route::post('/register-user', [LoginController::class, 'registerUser'])->name('register-user');
 Route::post('/login-user', [LoginController::class, 'postLogin'])->name('login-user');
 Route::group(['middleware' => ['auth', 'admin']], function () {
