@@ -16,13 +16,8 @@ class CreateVotingsTable extends Migration
             $table->id();
             $table->integer('vote_count');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('feedback_id');
-            
-            // You may add additional columns as needed
-            
+            $table->unsignedBigInteger('feedback_id');            
             $table->timestamps();
-
-            // Define foreign keys
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('feedback_id')->references('id')->on('feedbacks')->onDelete('cascade');
         });

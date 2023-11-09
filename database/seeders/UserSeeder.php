@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Feedback;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +19,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // admin
-        DB::table('users')->insert([
+        $adminUser = User::create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',
             'password' => Hash::make('Adm!n@143'),
@@ -26,7 +28,7 @@ class UserSeeder extends Seeder
             'updated_at' => now(),
         ]);
         // user
-        DB::table('users')->insert([
+        $user = User::create([
             'name' => 'Khan',
             'email' => 'khan@example.com',
             'password' => Hash::make('User@123'),
@@ -37,17 +39,21 @@ class UserSeeder extends Seeder
         $adminRole = Role::create(['name' => 'admin']);
         $moderatorRole = Role::create(['name' => 'moderator']);
         $userRole = Role::create(['name' => 'user']);
-
-        // Permissions
-        $manageUsersPermission = Permission::create(['name' => 'manage users']);
-        $manageCommentsPermission = Permission::create(['name' => 'manage comments']);
+       
         $posting=Permission::create(['name' => 'posting']);
         $commenting=Permission::create(['name' => 'commenting']);
-        
+        $user->roles()->attach($userRole);
+        $user->permissions()->attach([$posting->id, $commenting->id]);
+        $adminUser->roles()->attach($adminRole);
+        //adding default post for user
+        Feedback::create([
+            'title'=>'He this is Default post',
+            'description'=>'<p>User can comment on this but that user should have login ist</p>',
+            'category'=>'improvement',
+            'user_id'=>1,
+            'created_at'=>now(),
+            'updated_at'=>now()
+        ]);
 
-
-        // Assign permissions to roles
-        $adminRole->givePermissionTo($manageUsersPermission, $manageCommentsPermission);
-        $moderatorRole->givePermissionTo($manageCommentsPermission);
     }
 }
